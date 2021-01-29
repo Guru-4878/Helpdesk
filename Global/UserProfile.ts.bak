@@ -1,0 +1,59 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { CasDetails } from '../Models/CAS/cas-details'
+@Injectable()
+export class UserProfile {
+  userProfile: CasDetails = {
+    EmployeeCode: "",
+    EmployeeName: ""
+  };
+  constructor(private router: Router) {
+  }
+  setProfile(profile: CasDetails): void {
+    sessionStorage.setItem('EmployeeCode', profile.EmployeeCode);
+    sessionStorage.setItem('EmployeeName', profile.EmployeeName);
+    sessionStorage.setItem('DeptCode', profile.DeptCode);
+    sessionStorage.setItem('DeptName', profile.DeptName);
+    sessionStorage.setItem('GradeID', profile.GradeID);
+    sessionStorage.setItem('GradeName', profile.GradeName);
+    sessionStorage.setItem('ProjectID', profile.ProjectID);
+    sessionStorage.setItem('ProjectName', profile.ProjectName);
+    sessionStorage.setItem('SecondaryProjects', profile.SecondaryProjects);
+    localStorage.setItem("Local", JSON.stringify(profile));
+  }
+
+  getProfile(): CasDetails {
+
+    this.userProfile.EmployeeCode = sessionStorage.getItem('EmployeeCode');
+    this.userProfile.EmployeeName = sessionStorage.getItem('EmployeeName');
+    this.userProfile.GradeID = sessionStorage.getItem('GradeID');
+    this.userProfile.GradeName = sessionStorage.getItem('GradeName');
+    this.userProfile.DeptName = sessionStorage.getItem('DeptName');
+    this.userProfile.DeptCode = sessionStorage.getItem('DeptCode');
+    this.userProfile.ProjectID = sessionStorage.getItem('ProjectID');
+    this.userProfile.SecondaryProjects = sessionStorage.getItem('SecondaryProjects');
+    this.userProfile.ProjectName = sessionStorage.getItem('ProjectName');
+    return this.userProfile;
+  }
+  get_userdetails(): string  {
+    return localStorage.getItem("Local");
+  }
+
+  resetProfile(): CasDetails {
+    localStorage.setItem("C", "0");
+    sessionStorage.removeItem('EmployeeCode');
+    sessionStorage.removeItem('EmployeeName');
+    this.userProfile = {
+      EmployeeCode: "",
+      EmployeeName: "",
+      SecondaryProjects: "",
+      ProjectName: "",
+      DeptCode: "",
+      GradeName: "",
+      GradeID: "",
+      DeptName: "",
+      ProjectID: ""
+    };
+    return this.userProfile;
+  }
+}

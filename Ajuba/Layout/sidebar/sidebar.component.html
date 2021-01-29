@@ -1,0 +1,36 @@
+<script>
+  document.querySelector('.collapse').collapse();
+</script>
+<nav class="pcoded-navbar menupos-fixed brand-blue">
+  <div class="navbar-wrapper">
+    <div class="navbar-content scroll-div ">
+      <ul class="nav pcoded-inner-navbar sidenav-inner">
+        <li class="nav-item " *ngFor="let menu of menuList">
+          <a routerLink={{menu.link}} *ngIf="menu.subItems.length==0">
+            <span class="pcoded-micon">
+              <i class="{{menu.icon}}"
+                 aria-hidden="true"></i>
+            </span><span class="pcoded-mtext">{{menu.label}}</span>
+          </a>
+        </li>
+        <!--(click)="selectaddcss(menu.label)" [ngClass]="{'pcoded-trigger':(menu.label)=='pcoded-trigger'}"-->
+        <li class="nav-item pcoded-hasmenu " id="id_{{menu.label}}" *ngFor="let menu of menuList">
+          <a class="nav-link has-ripple" data-toggle="collapse" href="#ul_{{menu.label}}" aria-expanded="false" (click)="toggleClass(menu.label)" *ngIf="menu.subItems.length>0">
+            <span class="pcoded-micon">
+              <i class="{{menu.icon}}"
+                 aria-hidden="true"></i>
+            </span><span class="pcoded-mtext">{{menu.label}}</span>
+            <span class="ripple ripple-animate" style="height: 168px; width: 168px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -57px; left: 31px;"></span>
+          </a>
+          <ul class="nav-2-level collapse pcoded-submenu" [ngStyle]="{display: getColor(menu.label)}" id="ul_{{menu.label}}" *ngIf="menu.subItems.length>0">
+            <li (click)="select(subMenu)" [ngClass]="{active: isActive(subMenu)}" id="id_{{subMenu.label}}" *ngFor="let subMenu of menu.subItems">
+              <a class="" routerLink={{subMenu.link}}>{{subMenu.label}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+

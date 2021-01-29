@@ -1,0 +1,61 @@
+<!--<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="username">AJP Code</label>
+    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+      <div *ngIf="f.username.errors.required">AJP Code is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary">
+      Login
+    </button>
+  </div>
+</form>-->
+<div class="pcoded-content">
+  <div class="collapse show" id="collapse-search">
+    <div class="row">
+      <div class="col-sm-12">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="card">
+            <div class="card-header py-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="align-self-center">
+                  <h5 class="text-md">
+                    Change user
+                    <small class="text-danger">* Fields mandatory</small>
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-4">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group mb-2">
+
+                    <span class="form-group  mb-2 has-float-label fill">
+                      <input type="text" placeholder="" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                      <label class="floating-label" for="txtTcktDesc" style="font-weight: 500;font-size: 13px !important;">
+                        AJP Code <span class="text-danger" *ngIf="submitted && f.username.errors&&f.username.errors.required">
+                          *
+                        </span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div>
+                    <button type="submit" class="btn btn-info mr-2">
+                      Search <small>(F8)</small>
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

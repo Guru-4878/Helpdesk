@@ -1,0 +1,169 @@
+<div class="pcoded-content">
+  <form [formGroup]="DynamicForm">
+    <div class="card-body">
+      <div class="row align-items-center" *ngIf="SIngle_Multiple=='S'">
+        <div class="col-sm-6 col-md-4" *ngFor="let control of Dynamicformarrya">
+          <div class="form-group mb-2" *ngIf="control.CONTROL_DESC=='DropDownList'&&control.Is_Dependant">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>
+            <ng-select [allowClear]="true" [class]="{ 'is-invalid': submitted && DynamicForm.get(control.Physical_Field_Name).errors }"
+                       formControlName="{{control.Physical_Field_Name}}" placeholder="{{control.Display_Name}}"
+                       filterPlaceholder="Type to {{control.Display_Name}}.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body'
+                       [options]="control.Options| filter : 'ParentId' : DynamicForm.get(control.DependentFieldName).value">
+            </ng-select>
+            <div *ngIf="submitted&&DynamicForm.get(control.Physical_Field_Name).errors||DynamicForm.get(control.Physical_Field_Name).dirty||DynamicForm.get(control.Physical_Field_Name).touched">
+              <span class="text-danger" *ngIf="!DynamicForm.get(control.Physical_Field_Name).valid">{{control.Display_Name}} is Required.!</span>
+            </div>
+          </div>
+          <div class="form-group mb-2" *ngIf="control.CONTROL_DESC=='DropDownList'&&!control.Is_Dependant">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>
+            <ng-select [allowClear]="true" [class]="{ 'is-invalid': submitted && DynamicForm.get(control.Physical_Field_Name).errors }"
+                       formControlName="{{control.Physical_Field_Name}}" placeholder="{{control.Display_Name}}"
+                       filterPlaceholder="Type to {{control.Display_Name}}.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body'
+                       [options]="control.Options">
+            </ng-select>
+            <div *ngIf="submitted&&DynamicForm.get(control.Physical_Field_Name).errors||DynamicForm.get(control.Physical_Field_Name).dirty||DynamicForm.get(control.Physical_Field_Name).touched">
+              <span class="text-danger" *ngIf="!DynamicForm.get(control.Physical_Field_Name).valid">{{control.Display_Name}} is Required.!</span>
+            </div>
+          </div>
+          <div class="form-group mb-2" *ngIf="control.CONTROL_DESC=='TextBox'">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>
+            <input [readonly]="control.Is_Readonly" [ngClass]="{ 'is-invalid': submitted && DynamicForm.get(control.Physical_Field_Name).errors }" type="{'text '}" formControlName="{{control.Physical_Field_Name}}" class="form-control" />
+            <div *ngIf="submitted&&DynamicForm.get(control.Physical_Field_Name).errors||DynamicForm.get(control.Physical_Field_Name).dirty||DynamicForm.get(control.Physical_Field_Name).touched">
+              <span class="text-danger" *ngIf="!DynamicForm.get(control.Physical_Field_Name).valid">{{control.Display_Name}} is Required.!</span>
+            </div>
+          </div>
+          <div class="form-group mb-2" *ngIf="control.CONTROL_DESC=='DatePicker'">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>
+            <input [readonly]="control.Is_Readonly" (click)="date.toggle()" ngbDatepicker
+                   #date="ngbDatepicker" [ngClass]="{ 'is-invalid': submitted && DynamicForm.get(control.Physical_Field_Name).errors }" type="{'text '}" formControlName="{{control.Physical_Field_Name}}" class="form-control" />
+            <div *ngIf="submitted&&DynamicForm.get(control.Physical_Field_Name).errors||DynamicForm.get(control.Physical_Field_Name).dirty||DynamicForm.get(control.Physical_Field_Name).touched">
+              <span class="text-danger" *ngIf="!DynamicForm.get(control.Physical_Field_Name).valid">{{control.Display_Name}} is Required.!</span>
+            </div>
+          </div>
+          <div class="form-group mb-2" *ngIf="control.CONTROL_DESC=='TextArea'">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>
+            <textarea [readonly]="control.Is_Readonly" [ngClass]="{ 'is-invalid': submitted && DynamicForm.get(control.Physical_Field_Name).errors }" type="{'text '}" formControlName="{{control.Physical_Field_Name}}" class="form-control"></textarea>
+            <div *ngIf="submitted&&DynamicForm.get(control.Physical_Field_Name).errors||DynamicForm.get(control.Physical_Field_Name).dirty||DynamicForm.get(control.Physical_Field_Name).touched">
+              <span class="text-danger" *ngIf="!DynamicForm.get(control.Physical_Field_Name).valid">{{control.Display_Name}} is Required.!</span>
+            </div>
+          </div>
+
+          <div class="form-group mb-2" *ngIf="control.CONTROL_DESC=='CheckBox'">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>
+            <input [readonly]="control.Is_Readonly" type="checkbox" formControlName="{{control.Physical_Field_Name}}" id="{{control.Physical_Field_Name}}" class="form-check-input" [ngClass]="{ 'is-invalid': submitted && DynamicForm.get(control.Physical_Field_Name).errors  }" />
+            <div *ngIf="submitted&&DynamicForm.get(control.Physical_Field_Name).errors||DynamicForm.get(control.Physical_Field_Name).dirty||DynamicForm.get(control.Physical_Field_Name).touched">
+              <span class="text-danger" *ngIf="!DynamicForm.get(control.Physical_Field_Name).valid">{{control.Display_Name}} is Required.!</span>
+            </div>
+          </div>
+
+          <div lass="form-group mb-2" *ngIf="control.CONTROL_DESC=='Label'">
+            <label class="control-label">
+              {{control.Display_Name}}
+            </label>&nbsp;&nbsp;&nbsp;
+            <span>{{control.data}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="SIngle_Multiple=='M'">
+      <div class="card-header card-header-extn">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="align-self-center">
+            <h5 class="text-md">
+              Ticket Additional Details
+            </h5>
+          </div>
+          <div class="align-self-end"  *ngIf="addrow_btn"> <button type="button" class="btn btn-info" (click)="addNewRow()"><i class="fa fa-plus"></i> &nbsp;Add Row</button></div>
+        </div>
+      </div>
+      <table id="tbl-mytickets" class="table color-table info-table table-striped table-leave mb-0">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th *ngFor="let row of MultiColumnsarryaObject;let index=index;let lastRow = last">{{row.Display_Name}}</th>
+            <th  *ngIf="addrow_btn">Action</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="Table" *ngIf="Dynamicformarrya.length>0">
+          <ng-container *ngFor="let data of DynamicForm.controls?.Table?.controls; let i = index">
+            <ng-container [formGroupName]="i">
+              <tr>
+                <td>{{i+1}}</td>
+                <td *ngFor="let control of Dynamicformarrya | filter : 'Unique_Id' : data.get('Unique_Id').value;let j=index">
+                  <div>
+                    <input type="hidden" formControlName="Unique_Id" />
+                    <input type="hidden" formControlName="Physical_Table_Name" />
+                  </div>
+                  <div *ngIf="control.CONTROL_DESC=='DropDownList'&&control.Is_Dependant">
+                    <ng-select [allowClear]="true" formControlName="{{control.Physical_Field_Name}}" [class]="{ 'is-invalid': submitted && data.get(control.Physical_Field_Name).errors&&(data.get(control.Physical_Field_Name)?.touched) }" placeholder="{{control.Display_Name}}" filterPlaceholder="Type to {{control.Display_Name}}.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="control.Options| filter : 'ParentId' : data.get(control.DependentFieldName).value">
+                    </ng-select>
+
+                    <div *ngIf="submitted&&data.get(control.Physical_Field_Name).errors ||data.get(control.Physical_Field_Name).dirty||data.get(control.Physical_Field_Name).touched">
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.required">{{control.Display_Name}} is Required.!</span>
+                    </div>
+                  </div>
+                  <div *ngIf="control.CONTROL_DESC=='DropDownList'&&!control.Is_Dependant">
+                    <ng-select [allowClear]="true" formControlName="{{control.Physical_Field_Name}}" [class]="{ 'is-invalid': submitted && data.get(control.Physical_Field_Name).errors }" placeholder="{{control.Display_Name}}" filterPlaceholder="Type to {{control.Display_Name}}.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="control.Options">
+                    </ng-select>
+
+                    <div *ngIf="submitted&&data.get(control.Physical_Field_Name).errors||data.get(control.Physical_Field_Name).dirty||data.get(control.Physical_Field_Name).touched">
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.required">{{control.Display_Name}} is Required.!</span>
+                    </div>
+                  </div>
+                  <div *ngIf="control.CONTROL_DESC=='TextBox'">
+                    <input formControlName="{{control.Physical_Field_Name}}" [ngClass]="{ 'is-invalid': submitted && data.get(control.Physical_Field_Name).errors }" [readonly]="control.Is_Readonly" type="{'text '}" class="form-control" />
+                    <div *ngIf="submitted&&data.get(control.Physical_Field_Name).errors||data.get(control.Physical_Field_Name).dirty||data.get(control.Physical_Field_Name).touched">
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.required">{{control.Display_Name}} is Required.!</span>
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.minlength">{{control.Display_Name}} should be min {{control.Minimum_Value}}  {{control.Is_Numeric==null?'Chars':'Numbers'}}</span>
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.maxlength">{{control.Display_Name}}  should be min {{control.Maximum_Value}} {{control.Is_Numeric==null?'Chars':'Numbers'}} </span>
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.pattern">{{control.Display_Name}}  allowed numbers only.! </span>
+                    </div>
+                    
+                  </div>
+                  <div *ngIf="control.CONTROL_DESC=='DatePicker'">
+                    <input formControlName="{{control.Physical_Field_Name}}" [ngClass]="{ 'is-invalid': submitted && data.get(control.Physical_Field_Name).errors }" [readonly]="control.Is_Readonly" (click)="date.toggle()" ngbDatepicker
+                           #date="ngbDatepicker" type="{'text '}" class="form-control" />
+
+                    <div *ngIf="submitted&&data.get(control.Physical_Field_Name).errors||data.get(control.Physical_Field_Name).dirty||data.get(control.Physical_Field_Name).touched">
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.required">{{control.Display_Name}} is Required.!</span>
+                    </div>
+                  </div>
+                  <div formControlName="{{control.Physical_Field_Name}}" [ngClass]="{ 'is-invalid': submitted && data.get(control.Physical_Field_Name).errors }" *ngIf="control.CONTROL_DESC=='TextArea'">
+                    <textarea [readonly]="control.Is_Readonly" type="{'text '}" class="form-control"></textarea>
+
+                    <div *ngIf="submitted&&data.get(control.Physical_Field_Name).errors||data.get(control.Physical_Field_Name).dirty||data.get(control.Physical_Field_Name).touched">
+                      <span class="text-danger" *ngIf="data.get(control.Physical_Field_Name).errors?.required">{{control.Display_Name}} is Required.!</span>
+                    </div>
+                  </div>
+                  <div formControlName="{{control.Physical_Field_Name}}" *ngIf="control.CONTROL_DESC=='CheckBox'">
+                    <input [readonly]="control.Is_Readonly" type="checkbox" formControlName="{{control.Physical_Field_Name}}" class="form-check-input" />
+                  </div>
+                  <div *ngIf="control.CONTROL_DESC=='Label'">
+                    <span>{{data.get(control.Physical_Field_Name).value}}</span>
+                  </div>
+                </td>
+                <td  *ngIf="addrow_btn">
+                  <a *ngIf="data.get('Unique_Id').value!=0" style="cursor:pointer;" class="font-18 text-red mx-1" title="Delete" (click)="onDeleteRow(data.get('Unique_Id').value,i)">
+                    <i  class="feather icon-delete" aria-hidden="true"></i>
+                  </a>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>

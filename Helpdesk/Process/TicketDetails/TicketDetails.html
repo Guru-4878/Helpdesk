@@ -1,0 +1,512 @@
+<div class="pcoded-content">
+  <div class="card">
+    <form *ngIf="!forms_hide_show" [formGroup]="TicketDetailsForm" (ngSubmit)="ticketFormSubmitt()" novalidate autocomplete="off">
+      <div class="card-header card-header-extn">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="align-self-center">
+            <h5 class="text-md">
+              Ticket Details
+              <small class="text-danger">* Fields mandatory</small>
+            </h5>
+          </div>
+
+          <div class="align-self-center">
+            <button type="submit" class="btn btn-sm btn-info mr-2">
+              Submit <small>(F9)</small>
+            </button>
+            <button type="reset" (click)="onReset()" class="btn btn-sm btn-secondary">
+              Cancel <small>(F2)</small>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body pb-0">
+        <div class="card shadow-none border bg-light">
+          <div class="card-body pb-0">
+            <div class="row align-items-center">
+              <div class="col-sm-6 col-md-3">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Ticket ID
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <span>{{ticket_id}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Registered Dt
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <span>{{ticket_reg| date :'dd-MM-yyyy hh:mm a'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Location
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <span>{{ticket_location}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Extension No
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <span>{{ticket_exnt}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Ticket Type
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <span *ngIf="!istickettype">{{ticket_type}}</span>
+                      <span *ngIf="istickettype" style="width: 57%">
+                        <ng-select (selected)="OnSelectedTicketType($event)" placeholder="Ticket Type" filterPlaceholder="Type to Ticket Type.." formControlName="TicketType" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="ticketType">
+                        </ng-select>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Category
+                        <span class="text-danger" *ngIf="submitted && t.Category.errors && t.Category.errors.required">
+                          *
+                        </span>
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <ng-select (selected)="OnSelectedCategory($event)" [ngClass]="{ 'is-invalid': submitted && t.Category.errors }" formControlName="Category" placeholder="Category" filterPlaceholder="Type to Category.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="ticketCat">
+                      </ng-select>
+                    </div>
+                    <span class="text-danger" *ngIf="submitted && t.Category.errors&&t.Category.errors.required">
+                      Category required..!
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-4">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Sub Category
+                        <span class="text-danger" *ngIf="submitted && t.SubCategory.errors&&t.SubCategory.errors.required">
+                          *
+                        </span>
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <ng-select placeholder="Sub Category" [ngClass]="{ 'is-invalid': submitted && t.SubCategory.errors }" (selected)="OnSelectedSubCategory($event)" bindLabel="label" bindValue="value" formControlName="SubCategory" filterPlaceholder="Type to Sub Category.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketSubcat">
+                      </ng-select>
+                      <!--<div *ngIf="submitted && t.SubCategory.errors" class="invalid-feedback">
+                        <div *ngIf="t.SubCategory.errors.required">Sub Category required</div>
+                      </div>-->
+                    </div>
+                    <span style="text-align:center;" class="text-danger" *ngIf="submitted && t.SubCategory.errors&&t.SubCategory.errors.required">
+                      Sub Category required..!
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group mb-2">
+              <label for="ddlFaultCategory" class="control-label">
+                Ticket Priority
+                <span class="text-danger" *ngIf="submitted && t.TicketPriority.errors&&t.TicketPriority.errors.required">
+                  *
+                </span>
+              </label>
+              <ng-select placeholder="Priority" (selected)="PriorityChanged($event);" [ngClass]="{ 'is-invalid': submitted && t.TicketPriority.errors }" bindLabel="label" bindValue="value" formControlName="TicketPriority" filterPlaceholder="Type to Priority.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketPriority">
+              </ng-select>
+            </div>
+            <span style="text-align:center;" class="text-danger" *ngIf="submitted && t.TicketPriority.errors&&t.TicketPriority.errors.required">
+              Ticket Priority..!
+            </span>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group mb-2">
+              <label for="ddlTicketStatus" class="control-label">
+                Status
+                <span class="text-danger" *ngIf="submitted && t.Status.errors&&t.Status.errors.required">
+                  *
+                </span>
+              </label>
+              <ng-select placeholder="Status" (selected)="StatusChanged($event);" bindLabel="label" bindValue="value" [ngClass]="{ 'is-invalid': submitted && t.Status.errors }" formControlName="Status" filterPlaceholder="Type to status.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketStatus">
+              </ng-select>
+              <span class="text-danger" *ngIf="submitted && t.Status.errors&&t.Status.errors.required">
+                Please Select Status..!
+              </span>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+
+            <span class="form-group  mb-2 has-float-label fill">
+
+              <input id="RelatedTickets" placeholder="" type="text" bindLabel="label" bindValue="value" formControlName="RelatedTickets" class="form-control">
+              <label class="floating-label" for="RelatedTickets" style="font-weight: 500;font-size: 13px !important;">
+                Related Tickets
+              </label>
+            </span>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <span class="form-group  mb-2 has-float-label fill">
+              <input type="text" [textMask]="mask" [ngClass]="{ 'is-invalid': submitted && t.TimeTaken.errors }" bindLabel="label" bindValue="value" formControlName="TimeTaken" class="input form-control " id="TimeTaken" type="text" placeholder="" />
+              <label class="floating-label" for="demo" style="font-weight: 500;font-size: 13px !important;">
+                Time Taken <span class="text-danger" *ngIf="submitted && t.TimeTaken.errors&&t.TimeTaken.errors.required">
+                  *
+                </span>
+              </label>
+            </span>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group mb-2">
+              <label class="control-label">Description</label>
+              <div class="card mb-0 shadow-none border">
+                <div class="card-body p-05 br-4">
+                  <p class="m-0 text-facebook">
+                    {{ticket_desc}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+
+            <span class="form-group  mb-2 has-float-label fill">
+              <textarea placeholder="" id="txtTcktDesc" [ngClass]="{ 'is-invalid': submitted && t.Comments.errors }" formControlName="Comments" class=" input form-control no-resize" rows="2"></textarea>
+              <label class="floating-label" for="txtTcktDesc" style="font-weight: 500;font-size: 13px !important;">
+                Comments <span class="text-danger" *ngIf="submitted &&t.Comments.errors&&t.Comments.errors.required">
+                  *
+                </span>
+              </label>
+            </span>
+          </div>
+
+          <div class="col-sm-6 col-md-3" *ngIf="isSubDeptIdIT">
+            <div class="form-group mb-2">
+              <label for="Employee" class="control-label">
+                IT DepartMents
+                <span class="text-danger" *ngIf="submitted && t.SubDeptIdIT.errors&&t.SubDeptIdIT.errors.required">
+                  *
+                </span>
+              </label>
+              <ng-select placeholder="IT DepartMents" (selected)="LoadITSubDepartMents($event);" [ngClass]="{ 'is-invalid': submitted && t.SubDeptIdIT.errors }" bindLabel="label" bindValue="value" formControlName="SubDeptIdIT" filterPlaceholder="Type to IT DepartMents.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketSubDepartMentsIT">
+              </ng-select>
+              <span class="text-danger" *ngIf="submitted && t.SubDeptIdIT.errors&&t.SubDeptIdIT.errors.required">
+                Please Select IT DepartMents...!
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3" *ngIf="EmployeeVisile">
+            <div class="form-group mb-2">
+              <label for="Employee" class="control-label">
+                Employee
+                <span class="text-danger" *ngIf="submitted && t.Employee.errors&&t.Employee.errors.required">
+                  *
+                </span>
+              </label>
+              <ng-select placeholder="Employee" [ngClass]="{ 'is-invalid': submitted && t.Employee.errors }" bindLabel="label" bindValue="value" formControlName="Employee" filterPlaceholder="Type to Employee.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketEmployess">
+              </ng-select>
+              <span class="text-danger" *ngIf="submitted && t.Employee.errors&&t.Employee.errors.required">
+                Please Select the Employee..!
+              </span>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3" *ngIf="DeptVisile">
+            <div class="form-group mb-2">
+              <label class="control-label">
+                DepartMents
+                <span class="text-danger" *ngIf="submitted && t.DeptId.errors&&t.DeptId.errors.required">
+                  *
+                </span>
+              </label>
+              <ng-select placeholder="Dept's" (selected)="LoadSubDepartMents($event);" [ngClass]="{ 'is-invalid': submitted && t.DeptId.errors }" bindLabel="label" bindValue="value" formControlName="DeptId" filterPlaceholder="Type to Departments.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketDepartment">
+              </ng-select>
+              <span class="text-danger" *ngIf="submitted && t.DeptId.errors&&t.DeptId.errors.required">
+                Please select the Departments...!
+              </span>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3" *ngIf="SubDeptVisile">
+            <div class="form-group mb-2">
+              <label class="control-label">
+                Sub DepartMents
+                <span class="text-danger" *ngIf="submitted && t.SubDeptId.errors&&t.SubDeptId.errors.required">
+                  *
+                </span>
+              </label>
+              <ng-select placeholder="Sub Dept's" bindLabel="label" bindValue="value" formControlName="SubDeptId" [ngClass]="{ 'is-invalid': submitted && t.SubDeptId.errors }" [options]="ticketSubDepartMent" filterPlaceholder="Type to Sub Departments.." highlightColor="#02B875" highlightTextColor="#fff">
+              </ng-select>
+              <span class="text-danger" *ngIf="submitted && t.SubDeptId.errors&&t.SubDeptId.errors.required">
+                Please select the Sub Departments...!
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3" *ngIf="IsClientSLA">
+            <div class="form-group mb-2">
+              <label class="control-label">
+                Client SLA Date
+                <span class="text-danger" *ngIf="submitted && t.ClientSLA.errors&&t.ClientSLA.errors.required">
+                  *
+                </span>
+              </label>
+              <input (click)="date123.toggle()" ngbDatepicker
+                     #date123="ngbDatepicker" type="{'text '}" [minDate]="minDate" formControlName="ClientSLA" class="form-control" />
+
+              <span class="text-danger" *ngIf="submitted && t.ClientSLA.errors&&t.ClientSLA.errors.required">
+                Client SLA Date...!
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-sm-12 mb-2">
+            <div class="form-group mb-0">
+              <div class="custom-upload" (click)="file.click()" style="text-align:center" appImageDrag
+                   (files)="filesDropped($event)">
+                <div class="fileuploader fileuploader-theme-boxafter" style="text-align:center" appImageDrag
+                     (files)="filesDropped($event)">
+                  <input #file type="file" formControlName="Files" multiple (change)="upload($event)" style="position: absolute;z-index: -9999; height: 0px; width: 0px; padding: 0px; margin: 0px; line-height: 0; outline: currentcolor none 0px; border: 0px none;opacity: 0;">
+                  <div class="fileuploader-items">
+                    <ul class="fileuploader-items-list"></ul>
+                  </div><div class="fileuploader-input">
+                    <div class="fileuploader-input-inner">
+                      <h3>Drag && Drop files here <a>Browse</a></h3>
+                    </div>
+                    <button type="button" class="fileuploader-input-button" (click)="file.click()">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="fileuploader fileuploader-theme-default">
+                <div class="fileuploader-items">
+                  <ul class="fileuploader-items-list">
+                    <ng-template ngFor let-item [ngForOf]="ISystemFileS">
+                      <li class="fileuploader-item file-type-no file-ext-{{item.css}} file-has-popup upload-failed">
+                        <div class="columns">
+                          <div class="column-thumbnail">
+                            <div class="fileuploader-item-image fileuploader-no-thumbnail ">
+                              <div style="background-color: #ce73dc" class="fileuploader-item-icon">
+                                <i>{{item.Type}}</i>
+                              </div>
+                            </div>
+                            <span class="fileuploader-action-popup"></span>
+                          </div>
+                          <div class="column-title">
+                            <div title="{{item.fileName}}"> {{item.fileName}}</div>
+                            <span> {{item.Size}}</span>
+                          </div>
+                          <div class="column-actions">
+                            <button type="button" class="fileuploader-action fileuploader-action-remove" (click)="deleteItem(item.fileName)" title="Delete">
+                              <i class="fileuploader-icon-remove"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    </ng-template>
+                  </ul>
+                </div>
+              </div>
+              <span class="text-danger" *ngIf="Fileerrors.length > 0">
+                <ul>
+                  <li *ngFor="let err of Fileerrors">{{err}}</li>
+                </ul>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-ticketadditionaldetails [DynamicForm]="TicketDetailsForm" [validationSet]="DynamicStatus" [submitted]="submitted" [ScreenName]="parentMessage" [Ticketid]="ticketid" [CommonObject]="TicketHistoryObj"></app-ticketadditionaldetails>
+    </form>
+    <form *ngIf="forms_hide_show&&!IsClose_FinalClose" [formGroup]="TicketDetailsReOpen_Form" (ngSubmit)="Re_Open_ticketFormSubmitt()" novalidate autocomplete="off">
+      <div class="card-header card-header-extn">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="align-self-center">
+            <h5 class="text-md">
+              Ticket Details
+              <small class="text-danger">* Fields mandatory</small>
+            </h5>
+          </div>
+          <div class="align-self-center">
+            <button type="submit" class="btn btn-sm btn-info mr-2">
+              {{buttontext}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body pb-0">
+        <div class="card shadow-none border bg-light">
+          <div class="card-body pb-0">
+            <div class="row align-items-center">
+              <div class="col-sm-6 col-md-3">
+                <div class="card mb-2 shadow-none border">
+                  <div class="card-body p-2 font-13">
+                    <div class="d-flex head-bg">
+                      <label class="m-0 align-self-center control-label">
+                        Ticket ID
+                      </label>
+                      <span class="border-right mx-2 d-inline"></span>
+                      <span>{{ticket_id}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-sm-6 col-md-3" *ngIf="!StatusDrop">
+                <div class="form-group mb-2">
+                  <label for="ddlTicketStatus" class="control-label">
+                    Status
+                    <span class="text-danger">
+                      *
+                    </span>
+                  </label>
+                  <ng-select placeholder="Status" bindLabel="label" bindValue="value" [ngClass]="{ 'is-invalid': submitted_Reopen && tt.Status.errors }" formControlName="Status" filterPlaceholder="Type to status.." highlightColor="#02B875" highlightTextColor="#fff" [options]="ticketStatus_Re_Open">
+                  </ng-select>
+                  <span class="text-danger" *ngIf="submitted_Reopen && tt.Status.errors&&t.Status.errors.required">
+                    Please Select Status..!
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <span class="form-group  mb-2 has-float-label fill">
+                  <textarea placeholder="" id="txtTcktDesc" [ngClass]="{ 'is-invalid': submitted_Reopen && tt.Comments.errors }" formControlName="Comments" class=" input form-control no-resize" rows="2"></textarea>
+                  <label class="floating-label" for="txtTcktDesc" style="font-weight: 500;font-size: 13px !important;">
+                    Comments <span class="text-danger" *ngIf="submitted_Reopen &&tt.Comments.errors&&tt.Comments.errors.required">
+                      *
+                    </span>
+                  </label>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header card-header-extn">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="align-self-center">
+              <h5 class="text-md">
+                Ticket History
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="ticketHistoryDetails?.length > 0" class="table-responsive">
+            <table datatable id="ticket-details" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-50">Si No</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Category</th>
+                  <th class="fix-col-120">Sub Category</th>
+                  <th class="fix-col-70">Priority</th>
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-120">Created By/Processed By</th>
+                  <th class="fix-col-120">Created Dt/Processed Dt</th>
+                  <th class="fix-col-110">Time Taken</th>
+                  <!--<th class="fix-col-100">Info</th>-->
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let history of ticketHistoryDetails; index as i;" [ngSwitch]="history.STATUS">
+                  <tr>
+                    <td class="text-center">
+                      
+                      {{ticketHistoryDetails.length-i}}
+                    </td>
+                    <td>{{history.DepartmentName}} {{history.SubDepartmentName=="" ? "" : history.SubDepartmentName}}</td>
+                    <td>{{history.TicketType}}</td>
+                    <td>{{history.Category}}</td>
+                    <td>{{history.SubCategory}}</td>
+                    <td class="text-center"><span class="{{history.Priority_Color_Code}}">{{history.Priority}}{{history.CLIENT_SLA_DT=="" ? "" : history.CLIENT_SLA_DT==null?"":"-"}}{{history.CLIENT_SLA_DT=="" ? "" : history.CLIENT_SLA_DT | date :'dd/MM/yyyy'}}</span></td>
+                    <td class="text-center">
+                      <span class="{{history.Class}}">{{history.STATUS_DESC}}</span>
+                    </td>
+                    <td class="text-center">{{history.UPDATED_BY}}</td>
+                    <td class="text-center">{{history.UPDATED_DT | date :'dd/MM/yyyy hh:mm'}}</td>
+                    <td>{{history.TIME_TAKEN}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <p class="m-0">
+                        {{history.PROCESS_COMMENTS}}
+                      </p>
+                      <p class="m-0 text-semi-bold" *ngIf="!!history.ASSIGNED_TO">
+                        <span class="text-primary">Assigned To </span> -
+                        <span class="text-danger">
+                          {{history.ASSIGNED_TO}}
+                        </span>
+                      </p>
+                    </td>
+                    <td colspan="1">
+                      <ng-container *ngFor="let Files of ticketfiles">
+                        <ul class="list-group" style="list-style-type:none;" *ngIf="Files.TProcessId==history.TPROCESS_ID">
+                          <li><i class="fas fa-download" style="color: #00b3b3"><a style="cursor:pointer;" (click)="TprocessDownloadFile(Files.Filename,Files.Shortname);">{{Files.Shortname}}</a></i></li>
+                        </ul>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #template123>
+    <div class="modal-body text-center">
+      <p>{{popoverMessage}}</p>
+      <a (click)="UnAuthAccess();" class="btn btn-info"><i class="fa fa-check"></i></a>
+    </div>
+  </ng-template>
+</div>
+

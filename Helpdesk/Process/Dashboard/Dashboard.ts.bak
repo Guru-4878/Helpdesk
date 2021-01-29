@@ -1,0 +1,107 @@
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { ApiSharedService } from '../../../Services/APIHelper';
+import { DataTableDirective } from 'angular-datatables';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import * as $ from 'jquery';
+import 'datatables.net'
+import { Subject } from 'rxjs';
+import { DashboardConstant } from './DashboardConstant';
+import { UserProfile } from '../../../Global/UserProfile';
+import { GlobalUtils } from '../../../Global/Globalvariables';
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './Dashboard.html'
+})
+export class DashboardComponent implements OnInit {
+  regTickets: any[] = [];
+  inpTickets: any[] = [];
+  assgnTickets: any[] = [];
+  grpTickets: any[] = [];
+  repTickets: any[] = [];
+  clTickets: any[] = [];
+
+  Empcode: string = "";
+  DepartmentId: number = 0;
+  regCount: number = 0;
+  inpCount: number = 0;
+  asgnCount: number = 0;
+  grpCount: number = 0;
+  repCount: number = 0;
+  clCount: number = 0;
+
+  constructor(private http: ApiSharedService, private constant: DashboardConstant, private formBuilder: FormBuilder, private toast: ToastrService, private User: UserProfile, private Global: GlobalUtils) {
+
+    //this.Empcode = this.User.getProfile().EmployeeCode;
+    this.Empcode = this.User.getProfile().EmployeeCode;
+    this.DepartmentId = 14;
+
+  }
+  ngAfterViewInit() {
+    // this.BindDashboard();
+    console.log("after view init");
+  }
+  //page Load
+  ngOnInit(): void {
+    this.BindDashboard();
+    console.log("Before view init page load");
+  }
+
+  BindDashboard() {
+    this.regTickets = [];
+    this.inpTickets = [];
+    this.assgnTickets = [];
+    this.grpTickets = [];
+    this.repTickets = [];
+    this.clTickets = [];
+    // console.log("hi");
+    //console.log(this.Empcode);
+    this.http.GET(this.constant.binddashboard + "/" + this.Empcode + "/" + this.DepartmentId).subscribe(
+      (Result: any) => {
+        //  console.log("success");
+        this.regTickets = (Result["regTickets"]);
+        //console.log("binded");
+        this.regCount = this.regTickets.length;
+        //console.log(this.regCount);
+
+        this.inpTickets = (Result["inpTickets"]);
+        this.inpCount = this.inpTickets.length;
+
+        this.assgnTickets = (Result["assgnTickets"]);
+        this.asgnCount = this.assgnTickets.length;
+
+        this.grpTickets = (Result["mygrpTickets"]);
+        this.grpCount = this.grpTickets.length;
+
+        this.repTickets = (Result["repTickets"]);
+        this.repCount = this.repTickets.length;
+
+        this.clTickets = (Result["closedTickets"]);
+        this.clCount = this.clTickets.length;
+      }
+    );
+
+    //this.http.GET(this.constant.bindregistered + "/" + this.Empcode + "/" + this.DepartmentId).subscribe(
+    //  (Result: any) => {
+    //    this.regTickets = (Result);
+    //    this.regCount = this.regTickets.length;
+    //  }
+    //);
+
+
+
+
+
+
+
+    //this.http.GET(this.constant.bindinprocess + "/" + this.Empcode + "/" + this.DepartmentId).subscribe(
+    //  (Result: any) => {
+    //    this.inpTickets = (Result);
+    //    this.inpCount = this.inpTickets.length;
+    //  }
+    //);
+
+
+  }
+
+}

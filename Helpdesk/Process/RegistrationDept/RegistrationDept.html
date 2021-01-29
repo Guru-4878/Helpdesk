@@ -1,0 +1,21 @@
+<div class="pcoded-content pcoded-content--home pb-4 px-4">
+  <div class="row">
+    <!--<ng-template *ngFor="let re of Result; let i = index">-->
+    <div *ngFor="let re of Result; let i = index" class="col-sm-6 col-md-4 col-lg-3 px-2">
+      <a [routerLink]="['/HelpDesk/Process/RegistrationDtl',re.DEPT_ID]">
+        <div class="{{re.Dept_Color_Code}}">
+          <div class="card-body">
+            <h4 class="font-weight-normal">
+              {{re.TOOL_TIP}}
+            </h4>
+            <h3 class="mb-2 mt-5">
+              {{re.DEPT_DESC}} <i class="feather icon-users float-right font-36"></i>
+            </h3>
+          </div>
+        </div>
+      </a>
+    </div>
+    <!--</div>-->
+
+  </div>
+</div>

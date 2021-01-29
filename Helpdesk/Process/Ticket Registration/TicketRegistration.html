@@ -1,0 +1,390 @@
+<div class="pcoded-content">
+  <form [formGroup]="TicketRegisterForm" (ngSubmit)="TicketRegisterSubmit()" autocomplete="off" novalidate>
+    <div class="card">
+      <div class="card-header card-header-extn">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="align-self-center">
+            <h5 class="text-md">
+              Ticket Registration
+              <small class="text-danger">* Fields mandatory</small>
+            </h5>
+          </div>
+          <div class="align-self-center">
+            <button type="submit" class="btn btn-sm btn-info mr-2">
+              {{Btntext}} <small>(F9)</small>
+            </button>
+            <button type="reset" (click)="OnReset()" class="btn btn-sm btn-secondary">
+              Cancel <small>(F2)</small>
+            </button>
+            &nbsp;&nbsp;
+            <button *ngIf="IsDelete" type="button" class="btn  btn-sm btn-danger mr-2" (click)="openModalDelete(template)">
+              Delete <small>(F1)</small>
+            </button>
+            <!--mwlConfirmationPopover
+            [popoverTitle]="popoverTitle"
+            [popoverMessage]="popoverMessage"
+            placement="left"
+            (confirm)="RemoveRegisterTickets()"
+            (cancel)="cancelClicked = true"-->
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="" class="control-label">Department</label>
+              <input class="form-control text-primary text-semi-bold pl-2" type="text"
+                     formControlName="DepartmentName" readonly>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="" class="control-label">Name / Employee Code</label>
+              <input class="form-control text-primary text-semi-bold pl-2" type="text"
+                     formControlName="EmployeeName" readonly>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="" class="control-label">Location / Bay No.<span class="text-danger">*</span></label>
+              <input readonly class="form-control text-primary text-semi-bold pl-2" [class]="{ 'is-invalid':Submitt&&T.BayNo.touched && T.BayNo.errors }" formControlName="BayNo" type="text">
+            </div>
+            <div *ngIf="T.BayNo.touched&&T.BayNo.errors" class="text-danger">
+              <div *ngIf="T.BayNo.errors.required">Location / Bay No is required..!</div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="" class="control-label">Project<span class="text-danger">*</span></label>
+              <input readonly class="form-control text-primary text-semi-bold pl-2" type="text" [class]="{ 'is-invalid':Submitt&&T.ProjectName.touched && T.ProjectName.errors }" formControlName="ProjectName">
+            </div>
+            <div *ngIf="T.ProjectName.errors&&T.ProjectName.touched" class="text-danger">
+              <div *ngIf="T.ProjectName.errors.required">Project is required..!</div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2 ">
+              <span class="form-group  mb-2 has-float-label fill">
+                <input type="text" class="form-control" id="txtExtnNo" placeholder="" [ngClass]="{ 'is-invalid':Submitt && T.Extension.errors }" formControlName="Extension">
+                <label class="floating-label " for="txtExtnNo">
+                  Extension / Mobile Number <span class="text-danger">*</span>
+                </label>
+                <div *ngIf="Submitt&&T.Extension.errors||T.Extension.touched||T.Extension.dirty" class="text-danger">
+                  <div *ngIf="T.Extension.errors?.required"> Extension Number  is required..!</div>
+                  <div *ngIf="T.Extension.errors?.pattern">Only numbers required..!</div>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4" style="display:none;">
+            <div class="form-group mb-2">
+              <span class="form-group  mb-2 has-float-label fill">
+                <input type="text" class="form-control" id="txtSub" placeholder="" formControlName="Subject">
+                <label class="floating-label" for="txtSub">Subject</label>
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="ddlTType" class="control-label">
+                Ticket Type <span class="text-danger">*</span>
+              </label>
+              <ng-select class="form-control" (selected)="OnSelectedTicketType($event)" placeholder="Ticket Type" filterPlaceholder="Type to Ticket Type.." formControlName="TicketTypeId" [ngClass]="{ 'is-invalid': Submitt && T.TicketTypeId.errors }" [allowClear]="true" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="TicketType"></ng-select>
+              <div *ngIf="Submitt&&T.TicketTypeId.errors||T.TicketTypeId.touched||T.TicketTypeId.dirty" class="text-danger">
+                <div *ngIf="T.TicketTypeId.errors?.required"> Ticket Type is required..!</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="ddlCategory" class="control-label">
+                Category <span class="text-danger">
+                  *
+                </span>
+              </label>
+              <ng-select class="form-control" (selected)="OnSelectedCategory($event)" placeholder="Category" filterPlaceholder="Type to Category.." formControlName="CategoryId" [class]="{ 'is-invalid': Submitt&&T.CategoryId.touched && T.CategoryId.errors }" [allowClear]="true" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="Category"></ng-select>
+              <div *ngIf="Submitt&&T.CategoryId.errors||T.CategoryId.touched||T.CategoryId.dirty" class="text-danger">
+                <div *ngIf="T.CategoryId.errors?.required"> Category is required..!</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="ddlSubCategory" class="control-label">
+                Sub Category <span class="text-danger">
+                  *
+                </span>
+              </label>
+              <ng-select class="form-control" (selected)="OnSelectedSubCategory($event)" placeholder="SubCategory" filterPlaceholder="Type to SubCategory.." formControlName="SubCategoryId" [class]="{ 'is-invalid': Submitt&&T.SubCategoryId.touched && T.SubCategoryId.errors }" [allowClear]="true" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="SubCategory"></ng-select>
+              <div *ngIf="Submitt&&T.SubCategoryId.errors||T.SubCategoryId.touched||T.SubCategoryId.dirty" class="text-danger">
+                <div *ngIf="T.SubCategoryId.errors?.required"> SubCategory is required..!</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="ticketPriority" class="control-label">
+                Ticket Priority <span class="text-danger">
+                  *
+                </span>
+              </label>
+              <ng-select class="form-control" (selected)="TicketPriorityChange($event)" placeholder="TicketPriority" filterPlaceholder="Type to TicketPriority.." formControlName="TicketPriorityId" [class]="{ 'is-invalid': Submitt&&T.TicketPriorityId.touched && T.TicketPriorityId.errors }" [allowClear]="true" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="TicketPriority"></ng-select>
+              <div *ngIf="Submitt&&T.TicketPriorityId.errors||T.TicketPriorityId.touched||T.TicketPriorityId.dirty" class="text-danger">
+                <div *ngIf="T.TicketPriorityId.errors?.required"> TicketPriority is required..!</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="form-group mb-2">
+              <br />
+              <span class="form-group  mb-2 has-float-label fill">
+                <textarea name="txtTcktDesc" id="txtTcktDesc" class="form-control no-resize" rows="3" placeholder="" [ngClass]="{ 'is-invalid':Submitt&&T.TicketDescription.touched && T.TicketDescription.errors }" formControlName="TicketDescription"></textarea>
+                <label for="txtTcktDesc" class="floating-label">
+                  Ticket Description <span class="text-danger">*</span>
+                </label>
+                <div *ngIf="Submitt&&T.TicketDescription.errors||T.TicketDescription.touched||T.TicketDescription.dirty" class="text-danger">
+                  <div *ngIf="T.TicketDescription.errors?.required"> Ticket Description  is required..!</div>
+                  <div *ngIf="T.TicketDescription.errors?.pattern"> Special character not allowed..!</div>
+                </div>
+              </span>
+            </div>
+            <!---WeekendStaff Details-->
+            <button *ngIf="this.TicketRegisterForm.get('TicketTypeId').value=='49'&&IsWeekend" type="button" class="btn btn-sm text-uppercase waves-effect btn-success waves-light mr-2"
+                    data-toggle="modal" data-target="#WeekendDailog">
+              <i class="fa fa-plus"></i> WeekendStaff Additional Details
+            </button>
+          </div>
+        </div>
+        <div *ngIf="this.TicketRegisterForm.get('TicketTypeId').value=='49'" class="row align-items-center">
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="Grade" class="control-label">
+                Approve Authority <span class="text-danger">*</span>
+              </label>
+              <ng-select class="form-control" placeholder=" Approve Grade " filterPlaceholder="Type to  Approve Grade .." formControlName="ApproveGrade" [ngClass]="{ 'is-invalid': Submitt && T.ApproveGrade.errors }" [allowClear]="true" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="AproveGrade"></ng-select>
+              <div *ngIf="Submitt&&T.ApproveGrade.errors||T.ApproveGrade.touched||T.ApproveGrade.dirty" class="text-danger">
+                <div *ngIf="T.ApproveGrade.errors?.required"> Approve Grade is required..!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4">
+            <div class="form-group mb-2">
+              <label for="Grade" class="control-label">
+                Approve Grade <span class="text-danger">*</span>
+              </label>
+              <ng-select class="form-control" placeholder=" Approve Authority " filterPlaceholder="Type to  Approve Authority .." formControlName="ApproveAuth" [ngClass]="{ 'is-invalid': Submitt && T.ApproveAuth.errors }" [allowClear]="true" highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="AproveAuth| filter : 'ParentId' : TicketRegisterForm.get('ApproveGrade').value"></ng-select>
+              <div *ngIf="Submitt&&T.ApproveAuth.errors||T.ApproveAuth.touched||T.ApproveAuth.dirty" class="text-danger">
+                <div *ngIf="T.ApproveAuth.errors?.required"> Approve Authority is required..!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-ticketadditionaldetails *ngIf="!Is_Popup" [DynamicForm]="TicketRegisterForm" [submitted]="Submitt" [CommonObject]="TicketHistoryObj"></app-ticketadditionaldetails>
+        <div class="row align-items-center">
+          <div class="col-sm-12 mb-2">
+            <div class="form-group mb-0">
+              <div class="custom-upload" (click)="file.click()" style="text-align:center" appImageDrag
+                   (files)="filesDropped($event)">
+                <div class="fileuploader fileuploader-theme-boxafter" style="text-align:center" appImageDrag
+                     (files)="filesDropped($event)">
+                  <input #file type="file" formControlName="Files" multiple (change)="upload($event)" style="position: absolute;z-index: -9999; height: 0px; width: 0px; padding: 0px; margin: 0px; line-height: 0; outline: currentcolor none 0px; border: 0px none;opacity: 0;">
+                  <div class="fileuploader-items">
+                    <ul class="fileuploader-items-list"></ul>
+                  </div><div class="fileuploader-input">
+                    <div class="fileuploader-input-inner">
+                      <h3>Drag && Drop files here <a>Browse</a></h3>
+                    </div>
+                    <button type="button" class="fileuploader-input-button" (click)="file.click()">+</button>
+                  </div>
+                </div>
+              </div>
+              <div class="fileuploader fileuploader-theme-default">
+                <div class="fileuploader-items">
+                  <ul class="fileuploader-items-list">
+                    <ng-template ngFor let-item [ngForOf]="ISystemFileS">
+                      <li class="fileuploader-item file-type-no file-ext-{{item.css}} file-has-popup upload-failed">
+                        <div class="columns">
+                          <div class="column-thumbnail">
+                            <div class="fileuploader-item-image fileuploader-no-thumbnail ">
+                              <div style="background-color: #ce73dc" class="fileuploader-item-icon">
+                                <i>{{item.Type}}</i>
+                              </div>
+                            </div>
+                            <span class="fileuploader-action-popup"></span>
+                          </div>
+                          <div class="column-title">
+                            <div title="{{item.fileName}}"> {{item.fileName}}</div>
+                            <span> {{item.Size}}</span>
+                          </div>
+                          <div class="column-actions">
+                            <button *ngIf="item.isdelete!='1'" type="button" class="fileuploader-action fileuploader-action-remove" (click)="deleteItem(item.fileName)" title="Delete">
+                              <i class="fileuploader-icon-remove"></i>
+                            </button>
+                            <button *ngIf="item.isdelete=='1'" type="button" class="fileuploader-action fileuploader-action-remove" (click)="DeleteSelectedFiles(item.fileName)" title="Delete">
+                              <i class="fileuploader-icon-remove"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    </ng-template>
+                  </ul>
+                </div>
+              </div>
+              <span class="text-danger" *ngIf="Fileerrors.length > 0">
+                <ul>
+                  <li *ngFor="let err of Fileerrors">{{err}}</li>
+                </ul>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>{{popoverMessage}}</p>
+      <button type="button" class="btn btn-danger" (click)="RemoveRegisterTickets()">Yes</button> &nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="decline();">No</button>
+    </div>
+  </ng-template>
+
+  <button *ngIf="Is_Popup" type="button" class="btn btn-sm text-uppercase waves-effect btn-success waves-light mr-2"
+          data-toggle="modal" (click)="openDialog()" data-target="#timesheet_filter_modal">
+    <i class="fa fa-plus"></i> Additional Details
+  </button>
+
+
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header card-header-extn">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="align-self-center">
+              <h5 class="text-md">
+                Ticket Registration History
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="ticketHistoryDetailsRegister?.length > 0" class="table-responsive">
+          <table datatable id="ticket-details" class="table color-table info-table table-striped table-leave mb-0">
+            <thead>
+              <tr>
+                <th class="fix-col-50">S.No</th>
+                <th class="fix-col-50">Ticket Id</th>
+                <th class="fix-col-120">Department</th>
+                <th class="fix-col-70">Type</th>
+                <th class="fix-col-120">Category</th>
+                <th class="fix-col-120">Sub Category</th>
+                <th class="fix-col-70">Priority</th>
+                <th class="fix-col-100">Status</th>
+                <th class="fix-col-120">Created By/Processed By</th>
+                <th class="fix-col-120">Created Dt/Processed Dt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let history of ticketHistoryDetailsRegister; let i=index;">
+                <tr>
+                  <td class="text-center">{{i+1}}</td>
+                  <td>
+                    <a *ngIf="history.STATUS_ID!='11'" class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',history.TCKT_ID]">
+                      {{history.TCKT_ID}}
+                    </a>
+                    <a style="cursor:pointer;" *ngIf="history.STATUS_ID=='11'" (click)="UpdateRegistration(history)" class="font-weight-semi-bold" [routerLink]="">
+                      {{history.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{history.DepartmentName}} {{history.SubDepartmentName=="" ? "" : history.SubDepartmentName}}</td>
+                  <td>{{history.TicketType}}</td>
+                  <td>{{history.Category}}</td>
+                  <td>{{history.SubCategory}}</td>
+                  <td class="text-center"><span class="{{history.Priority_Color_Code}}">{{history.Priority}}{{history.CLIENT_SLA_DT=="" ? "" : history.CLIENT_SLA_DT==null?"":"-"}}{{history.CLIENT_SLA_DT=="" ? "" : history.CLIENT_SLA_DT | date :'dd/MM/yyyy'}}</span></td>
+                  <td class="text-center">
+                    <span class="{{history.Class}}">{{history.STATUS_DESC}}</span>
+                  </td>
+                  <td class="text-center">{{history.UPDATED_BY}}</td>
+                  <td class="text-center">{{history.UPDATED_DT | date :'dd/MM/yyyy hh:mm'}}</td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <p class="m-0">
+                      {{history.TCKT_DESC}}
+                    </p>
+                    <p class="m-0 text-semi-bold" *ngIf="!!history.ASSIGNED_TO">
+                      <span class="text-primary">Assigned To </span> -
+                      <span class="text-danger">
+                        {{history.ASSIGNED_TO}}
+                      </span>
+                    </p>
+                  </td>
+                  <td colspan="2">
+                    <ng-container *ngFor="let Files of ticketfiles">
+                      <ul class="list-group" style="list-style-type:none;" *ngIf="Files.TProcessId==history.TPROCESS_ID">
+                        <li>
+                          <i class="fas fa-download" style="color: #00b3b3">
+                            <a style="cursor:pointer;" (click)="TprocessDownloadFile(Files.TicketId,Files.TProcessId,Files.Shortname);">{{Files.Shortname}}</a>
+
+
+                          </i>
+                        </li>
+                      </ul>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #basicModal let-modal>
+  <div style="margin-right: 11px; margin-top: 2px;">
+    <button type="button" class="close" (click)="modal.close('by: close icon');" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-ticketadditionaldetails [DynamicForm]="TicketRegisterForm" [submitted]="Submitt" [CommonObject]="TicketHistoryObj"></app-ticketadditionaldetails>
+  </div>
+</ng-template>
+
+<div id="timesheet_filter_modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="timesheet_filter_modal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-3">
+        <app-ticketadditionaldetails [DynamicForm]="TicketRegisterForm" [submitted]="Submitt" [CommonObject]="TicketHistoryObj"></app-ticketadditionaldetails>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--data-keyboard="false" data-backdrop="static"-->
+<div id="WeekendDailog" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="WeekendDailog" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-3">
+        <app-weekendholidaystaff (ReturnToParent)="ReturnToParentHander($event)"></app-weekendholidaystaff>
+      </div>
+    </div>
+  </div>
+</div>
+

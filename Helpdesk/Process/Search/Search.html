@@ -1,0 +1,317 @@
+<div class="navbar pcoded-header navbar-expand-lg navbar-light header-blue headerpos-fixed">
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav">
+      <li>
+        <button type="button" class="btn btn-sm btn-grey" data-toggle="collapse" data-target="#collapse-adv-search"
+                aria-expanded="false" aria-controls="collapse-adv-search">
+          <i class="fas fas fa-search mr-2"></i>Advance
+          Search
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="pcoded-content">
+  <div class="collapse show" id="collapse-search">
+    <div class="row">
+      <div class="col-sm-12">
+        <form [formGroup]="SingleSearch" (ngSubmit)="SingleSearchSubmitt()" autocomplete="off" novalidate>
+          <div class="card">
+            <div class="card-header py-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="align-self-center">
+                  <h5 class="text-md">
+                    Search
+                    <small class="text-danger">* Fields mandatory</small>
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div class="card-body pb-0">
+              <div class="row">
+                <div class="col-sm-6 ">
+
+                  <span class="form-group  mb-2 has-float-label fill">
+                    <input placeholder="" id="tickeId" [ngClass]="{ 'is-invalid': S.TicketId.touched && S.TicketId.errors }" formControlName="TicketId" class=" input form-control" type="text" />
+                    <label class="floating-label" for="tickeId" style="font-weight: 500;font-size: 13px !important;">
+                      Ticket ID
+                      *
+                    </label>
+                    <div *ngIf=" S.TicketId.errors&&S.TicketId.touched " class="invalid-feedback">
+                      <div *ngIf="S.TicketId.errors.required">Ticket ID is required</div>
+                      <div *ngIf="S.TicketId.errors.pattern">Only Numbers..!</div>
+                    </div>
+                  </span>
+                </div>
+                <div class="col-sm-6">
+                  <div>
+                    <button type="submit" class="btn btn-info mr-2">
+                      Search <small>(F8)</small>
+                    </button>
+                    <button type="reset" (click)="onReset()" class="btn btn-secondary">
+                      Cancel <small>(F2)</small>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="collapse" id="collapse-adv-search">
+    <div class="row">
+      <div class="col-sm-12">
+        <form [formGroup]="AdvanceSearch" (ngSubmit)="AdvanceSubmit()" autocomplete="off" novalidate>
+          <div class="card">
+            <div class="card-header card-header-extn">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="align-self-center">
+                  <h5 class="text-md">
+                    Advance Search
+                    <small class="text-danger">* Fields mandatory</small>
+                  </h5>
+                </div>
+
+                <div class="align-self-center">
+                  <button type="submit" class="btn btn-sm btn-info mr-2">
+                    Search <small>(F9)</small>
+                  </button>
+                  <button type="reset" (click)="ONReset()" class="btn btn-sm btn-secondary">
+                    Cancel <small>(F2)</small>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <label for="ddlResponsibleDepartment" class="control-label">
+                      Responsible Department <!--<span class="text-danger">
+                        *
+                      </span>-->
+                    </label>
+                    <ng-select [allowClear]="true" (selected)="OnSelectedResponsible($event)" [class]="{ 'is-invalid': ASubmitt&& A.ResDeptId.touched && A.ResDeptId.errors }" formControlName="ResDeptId" placeholder="Responsible Department" filterPlaceholder="Type to Responsible Department .." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="ResposibleDept">
+                    </ng-select>
+                    <div *ngIf="ASubmitt&&A.ResDeptId.errors&&A.ResDeptId.touched " class="invalid-feedback">
+                      <div *ngIf="A.ResDeptId.errors.required">Responsible Department..!</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <label for="ddlTicketType" class="control-label">
+                      Ticket Type <!--<span class="text-danger">
+                        *
+                      </span>-->
+                    </label>
+                    <ng-select [allowClear]="true" (selected)="OnSelectedTicketType($event)" [class]="{ 'is-invalid': ASubmitt && A.TicketTypeId.touched && A.TicketTypeId.errors }" formControlName="TicketTypeId" placeholder="Ticket Type" filterPlaceholder="Type to Ticket Type.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="TicketType ">
+                    </ng-select>
+                    <div *ngIf="ASubmitt && A.TicketTypeId.errors&&A.TicketTypeId.touched " class="invalid-feedback">
+                      <div *ngIf="ASubmitt && A.TicketTypeId.errors.required">Ticket Type..!</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <label for="ddlCategory" class="control-label">
+                      Category <!--<span class="text-danger">
+                        *
+                      </span>-->
+                    </label>
+                    <ng-select [allowClear]="true" (selected)="OnSelectedCategory($event)" [class]="{ 'is-invalid':  A.CategoryId.touched && A.CategoryId.errors }" formControlName="CategoryId" placeholder="Category" filterPlaceholder="Type to Category.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="Category ">
+                    </ng-select>
+                    <div *ngIf="A.CategoryId.errors && A.CategoryId.touched " class="invalid-feedback">
+                      <div *ngIf="A.CategoryId.errors.required">Select Category..!</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <label for="ddlSubCategory" class="control-label">
+                      Sub Category <!--<span class="text-danger">
+                        *
+                      </span>-->
+                    </label>
+                    <ng-select [allowClear]="true" [class]="{ 'is-invalid':  A.SubCategoryId.touched && A.SubCategoryId.errors }" formControlName="SubCategoryId" placeholder="Sub Category" filterPlaceholder="Type to Category.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="SubCategory ">
+                    </ng-select>
+                    <div *ngIf="A.SubCategoryId.errors&&A.SubCategoryId.touched " class="invalid-feedback">
+                      <div *ngIf="A.SubCategoryId.errors.required">Select SubCategory..!</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <label for="ticketPriority" class="control-label">
+                      Ticket Priority <!--<span class="text-danger">
+                        *
+                      </span>-->
+                    </label>
+                    <ng-select [allowClear]="true" [class]="{ 'is-invalid':  A.TicketPriorityId.touched && A.TicketPriorityId.errors }" formControlName="TicketPriorityId" placeholder="TicketPriority" filterPlaceholder="Type to TicketPriority.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="TicketPriority">
+                    </ng-select>
+                    <div *ngIf="A.TicketPriorityId.errors&&A.TicketPriorityId.touched " class="invalid-feedback">
+                      <div *ngIf="A.TicketPriorityId.errors.required">Ticket Priority..!</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <label for="ddlTicketStatus" class="control-label">
+                      Ticket Status <!--<span class="text-danger">
+                        *
+                      </span>-->
+                    </label>
+                    <ng-select [allowClear]="true" [class]="{ 'is-invalid':  A.TicketStatus.touched && A.TicketStatus.errors }" formControlName="TicketStatus" placeholder="Status" filterPlaceholder="Type to Status.." highlightColor="#02B875" highlightTextColor="#fff" appendTo='body' [options]="Status">
+                    </ng-select>
+                    <div *ngIf="A.TicketStatus.errors&&A.TicketStatus.touched " class="invalid-feedback">
+                      <div *ngIf="A.TicketStatus.errors.required">Ticket Status..!</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-3">
+                    <span class="form-group  mb-2 has-float-label fill">
+                      <input placeholder="FromDate" (click)="date1.toggle()" ngbDatepicker
+                             #date1="ngbDatepicker" id="FromDate" [ngClass]="{ 'is-invalid': A.FromDate.touched && A.FromDate.errors }" formControlName="FromDate" class=" input form-control" type="text" />
+                      <label class="floating-label" for="FromDate" style="font-weight: 500;font-size: 13px !important;">
+                        FromDate
+                        <span class="text-danger">
+                          *
+                        </span>
+                      </label>
+                      <div *ngIf="A.FromDate.errors&&A.FromDate.touched " class="invalid-feedback">
+                        <div *ngIf="A.FromDate.errors.required">FromDate is required</div>
+
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-3">
+                    <span class="form-group  mb-2 has-float-label fill">
+                      <input placeholder="ToDate" (click)="date.toggle()" ngbDatepicker
+                             #date="ngbDatepicker" id="ToDate" [ngClass]="{ 'is-invalid': A.ToDate.touched && A.ToDate.errors }" formControlName="ToDate" class=" input form-control" type="text" />
+                      <label class="floating-label" for="ToDate" style="font-weight: 500;font-size: 13px !important;">
+                        To Date
+                        <span class="text-danger">
+                          *
+                        </span>
+                      </label>
+                      <div *ngIf="A.ToDate.errors&&A.ToDate.touched " class="invalid-feedback">
+                        <div *ngIf="A.ToDate.errors.required">To Date is required</div>
+
+                      </div>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-3 ">
+                    <span class="form-group  mb-2 has-float-label fill">
+                      <input placeholder="CreatedBy" id="CreatedBy" formControlName="CreatedBy" class=" input form-control" type="text" />
+                      <label class="floating-label" for="CreatedBy" style="font-weight: 500;font-size: 13px !important;">
+                        CreatedBy <span class="text-danger">(User ID / Empcode)</span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-3">
+                    <span class="form-group  mb-2 has-float-label fill">
+                      <input placeholder="TicketId" id="TicketId" formControlName="TicketId" class=" input form-control" type="text" />
+                      <label class="floating-label" for="TicketId" style="font-weight: 500;font-size: 13px !important;">
+                        TicketId
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <!--<div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <span class="form-group  mb-2 has-float-label fill">
+                      <input placeholder="String Search" id="TicketId" formControlName="SearchString" class=" input form-control" type="text" />
+                      <label class="floating-label" for="TicketId" style="font-weight: 500;font-size: 13px !important;">
+                        String Search
+                      </label>
+                    </span>
+                  </div>
+                </div>-->
+
+                <div class="col-sm-6 col-md-4">
+                  <div class="form-group mb-2">
+                    <input type="text"
+                           class="form-control text-primary text-semi-bold px-2" value="{{FromDept}}" readonly />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header card-header-extn">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="align-self-center">
+              <h5 class="text-md">
+                Search Results
+              </h5>
+            </div>
+            <div class="align-self-center">
+              <button type="button" (click)="ExportTOExcel()" class="btn btn-sm btn-warning">
+                <i class="fas fa-share-square" aria-hidden="true"></i> Export to Excel
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="TicketHistory?.length > 0" class="table-responsive" #TABLE>
+            <table datatable id="tbl-search-results" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of TicketHistory; let i = index">
+                  <td>
+                    <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                      {{reg.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.PriorityClass}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.StatusClass}}">
+                      {{reg.STATUS_DESC}}
+                    </span>
+                  </td>
+                  <td>
+                    {{reg.UPDATED_BY}} - {{reg.EmployeeName}}
+                  </td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,112 @@
+<div class="card">
+  <div class="card-body">
+    <ul class="nav nav-tabs mb-2" id="hd-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold active" id="mytickets-tab" data-toggle="tab"
+           href="#mytickets" role="tab" aria-controls="mytickets" aria-selected="true">
+          My Tickets <span class="text-danger">(9)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold" id="mygroup-tab" data-toggle="tab"
+           href="#mygroup" role="tab" aria-controls="mygroup" aria-selected="false">
+          My Group <span class="text-danger">(5)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold" id="myreportee-tab" data-toggle="tab"
+           href="#myreportee" role="tab" aria-controls="myreportee" aria-selected="false">
+          My Reportee <span class="text-danger">(3)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold" id="assigned-tab" data-toggle="tab"
+           href="#assigned" role="tab" aria-controls="assigned" aria-selected="false">
+          Assigned <span class="text-danger">(5)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold" id="registered-tab" data-toggle="tab"
+           href="#registered" role="tab" aria-controls="registered" aria-selected="false">
+          Registered <span class="text-danger">(3)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold" id="inprocess-tab" data-toggle="tab"
+           href="#inprocess" role="tab" aria-controls="inprocess" aria-selected="false">
+          In-Process <span class="text-danger">(2)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-uppercase font-weight-semi-bold" id="closed-tab" data-toggle="tab" href="#closed"
+           role="tab" aria-controls="closed" aria-selected="false">Closed <span class="text-danger">(3)</span></a>
+      </li>
+    </ul>
+    <div *ngIf="Result.length>0" class="table-responsive">
+      <table datatable id="tbl-mytickets" class="table color-table info-table table-striped table-leave mb-0">
+        <thead>
+          <tr>
+            <th class="fix-col-120">Grade Description</th>
+            <th class="fix-col-70">Grade ID</th>
+            <th class="fix-col-80">Grade Name</th>
+            <th class="fix-col-120">Status</th>
+            <th class="fix-col-160">Updated by</th>
+            <th class="fix-col-80">Controls</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let re of Result; let i = index">
+            <td>
+              {{re.GradeDescription}}
+            </td>
+            <td>
+              {{re.GradeID}}
+            </td>
+            <td>
+              {{re.GradeName}}
+            </td>
+            <td>
+              {{re.Status}}
+            </td>
+            <td>
+              {{re.updatedby}}
+            </td>
+            <td class="text-center">
+              <a class="font-18 text-info mx-1 waves-effect" (click)="Edit(re)" title="Edit">
+                <i class="feather icon-edit mr-1" aria-hidden="true"></i>
+              </a>
+              <a mwlConfirmationPopover
+                 [popoverTitle]="popoverTitle"
+                 [popoverMessage]="popoverMessage"
+                 placement="left"
+                 (confirm)="delete(re.GradeID)"
+                 (cancel)="cancelClicked = true" class="font-18 text-red mx-1" title="Delete">
+                <i class="feather icon-delete" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card m-3">
+      <h5 class="card-header"></h5>
+      <div class="card-body">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Grade Description</label> &nbsp;&nbsp;
+              <input type="text" formControlName="GradeName" [ngClass]="{ 'is-invalid': submitted && f.GradeName.errors }" />
+              <div *ngIf="submitted && f.GradeName.errors" class="invalid-feedback">
+                <div *ngIf="f.GradeName.errors.required">GradeName is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary mr-1">Add</button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

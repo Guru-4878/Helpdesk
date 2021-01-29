@@ -1,0 +1,396 @@
+
+<div class="pcoded-content">
+  <div class="card">
+    <div class="card-body">
+      <ul class="nav nav-tabs mb-2" id="hd-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link text-uppercase font-weight-semi-bold active" id="mytickets-tab" data-toggle="tab"
+             href="#mytickets" role="tab" aria-controls="mytickets" aria-selected="true">
+            My Tickets <span class="text-danger">({{asgnCount}})</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase font-weight-semi-bold" id="mygroup-tab" data-toggle="tab"
+             href="#mygroup" role="tab" aria-controls="mygroup" aria-selected="false">
+            My Group <span class="text-danger">({{grpCount}})</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase font-weight-semi-bold" id="myreportee-tab" data-toggle="tab"
+             href="#myreportee" role="tab" aria-controls="myreportee" aria-selected="false">
+            My Reportee <span class="text-danger">({{repCount}})</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-uppercase font-weight-semi-bold" id="registered-tab" data-toggle="tab"
+             href="#registered" role="tab" aria-controls="registered" aria-selected="false">
+            Registered <span class="text-danger">({{regCount}})</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase font-weight-semi-bold" id="inprocess-tab" data-toggle="tab"
+             href="#inprocess" role="tab" aria-controls="inprocess" aria-selected="false">
+            In-Process <span class="text-danger">({{inpCount}})</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase font-weight-semi-bold" id="closed-tab" data-toggle="tab" href="#closed"
+             role="tab" aria-controls="closed" aria-selected="false">Closed <span class="text-danger">({{clCount}})</span></a>
+        </li>
+      </ul>
+      <div class="tab-content" id="hd-tabs-content">
+        <div class="tab-pane fade show active" id="mytickets" role="tabpanel" aria-labelledby="mytickets-tab">
+          <div *ngIf="assgnTickets.length>0" class="table-responsive">
+            <table datatable id="tbl-mytickets" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                  <th class="fix-col-80">Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of assgnTickets; let i = index">
+                  <td>
+                    <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                      {{reg.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.Priority_Color_Code}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.Status_Color_Code}}">
+                      {{reg.STATUS_DESC}}
+                    </span>
+                  </td>
+                  <td>
+                    {{reg.UPDATED_BY}} - {{reg.EmployeeName}}
+                  </td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                  <td class="text-center">
+                    <span class="font-18 text-green" data-placement="bottom" title="Download File" *ngIf="reg.AttachmentExists == 'YES'">
+                      <i class="feather icon-download-cloud mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-warning" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.SLAExceeded == 'YES'">
+                      <i class="feather icon-info mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-red" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.Alarm == 'YES'">
+                      <i class="feather icon-clock" aria-hidden="true"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="mygroup" role="tabpanel" aria-labelledby="mygroup-tab">
+          <div *ngIf="grpTickets.length>0" class="table-responsive">
+            <table datatable id="tbl-mygroup" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                  <th class="fix-col-80">Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of grpTickets; let i = index">
+                  <td>
+                    <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                      {{reg.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.Priority_Color_Code}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.Status_Color_Code}}">
+                      {{reg.STATUS_DESC}}
+                    </span>
+                  </td>
+                  <td>
+                    {{reg.UPDATED_BY}} - {{reg.EmployeeName}}
+                  </td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                  <td class="text-center">
+
+                    <span class="font-18 text-green" data-placement="bottom" title="Download File" *ngIf="reg.AttachmentExists == 'YES'">
+                      <i class="feather icon-download-cloud mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-warning" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.SLAExceeded == 'YES'">
+                      <i class="feather icon-info mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-red" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.Alarm == 'YES'">
+                      <i class="feather icon-clock" aria-hidden="true"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="myreportee" role="tabpanel" aria-labelledby="myreportee-tab">
+          <div *ngIf="repTickets.length>0" class="table-responsive">
+            <table datatable id="tbl-myreportee" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                  <th class="fix-col-80">Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of repTickets; let i = index">
+                  <td>
+                    <!--<a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',Encript(reg.TCKT_ID),Encript(reg.TicketMode)]">-->
+                      <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                        {{reg.TCKT_ID}}
+                      </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.Priority_Color_Code}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.Status_Color_Code}}">
+                      {{reg.STATUS_DESC}}
+                    </span>
+                  </td>
+                  <td>
+                    {{reg.UPDATED_BY}} - {{reg.EmployeeName}}
+                  </td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                  <td class="text-center">
+
+                    <span class="font-18 text-green" data-placement="bottom" title="Download File" *ngIf="reg.AttachmentExists == 'YES'">
+                      <i class="feather icon-download-cloud mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-warning" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.SLAExceeded == 'YES'">
+                      <i class="feather icon-info mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-red" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.Alarm == 'YES'">
+                      <i class="feather icon-clock" aria-hidden="true"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="registered" role="tabpanel" aria-labelledby="registered-tab">
+          <div *ngIf="regTickets.length>0" class="table-responsive">
+            <table datatable id="tbl-registered" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                  <th class="fix-col-80">Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of regTickets; let i = index">
+                  <td>
+                    <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                      {{reg.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.Priority_Color_Code}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.Status_Color_Code}}">
+                      {{reg.STATUS_DESC}}
+                    </span>
+                  </td>
+                  <td>
+                    {{reg.UPDATED_BY}} - {{reg.EmployeeName}}
+                  </td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                  <td class="text-center">
+
+                    <span class="font-18 text-green" data-placement="bottom" title="Download File" *ngIf="reg.AttachmentExists == 'YES'">
+                      <i class="feather icon-download-cloud mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-warning" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.SLAExceeded == 'YES'">
+                      <i class="feather icon-info mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-red" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.Alarm == 'YES'">
+                      <i class="feather icon-clock" aria-hidden="true"></i>
+                    </span>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="inprocess" role="tabpanel" aria-labelledby="inprocess-tab">
+          <div *ngIf="inpTickets.length>0" class="table-responsive">
+            <table datatable id="tbl-inprocess" class="table color-table info-table table-striped table-leave mb-0">
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                  <th class="fix-col-80">Info</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr *ngFor="let reg of inpTickets; let i = index">
+                  <td>
+
+                    <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                      {{reg.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.Priority_Color_Code}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.Status_Color_Code}}">{{reg.STATUS_DESC}}</span>
+                  </td>
+                  <td>{{reg.UPDATED_BY}} - {{reg.EmployeeName}}</td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                  <td class="text-center">
+                    <span class="font-18 text-green" data-placement="bottom" title="Download File" *ngIf="reg.AttachmentExists == 'YES'">
+                      <i class="feather icon-download-cloud mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-warning" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.SLAExceeded == 'YES'">
+                      <i class="feather icon-info mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-red" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.Alarm == 'YES'">
+                      <i class="feather icon-clock" aria-hidden="true"></i>
+                    </span>
+                  
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="closed" role="tabpanel" aria-labelledby="closed-tab">
+          <div *ngIf="clTickets.length>0" class="table-responsive">
+            <table datatable id="tbl-closed" class="table color-table info-table table-striped table-leave mb-0">
+
+              <thead>
+                <tr>
+                  <th class="fix-col-70">Ticket ID</th>
+                  <th class="fix-col-120">Department</th>
+                  <th class="fix-col-70">Type</th>
+                  <th class="fix-col-120">Categry/SubCategory</th>
+                  <th class="fix-col-80">Priority</th>
+                  <!--<th class="fix-col-160">Subject</th>-->
+                  <th class="fix-col-100">Status</th>
+                  <th class="fix-col-110">Requested By</th>
+                  <th class="fix-col-110">Requested Dt</th>
+                  <th class="fix-col-80">Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of clTickets; let i = index">
+                  <td>
+                    <a class="font-weight-semi-bold" [routerLink]="['/HelpDesk/Process/ticketdetails',reg.TCKT_ID,reg.TicketMode]">
+                      {{reg.TCKT_ID}}
+                    </a>
+                  </td>
+                  <td>{{reg.DepartmentName}} {{reg.SubDepartmentName=="" ? "" : reg.SubDepartmentName}}</td>
+                  <td>{{reg.TicketType}}</td>
+                  <td>{{reg.Category}}/{{reg.SubCategory}}</td>
+                  <td class="text-center"><span class="{{reg.Priority_Color_Code}}">{{reg.Priority}}</span></td>
+                  <!--<td>Ticket Subject </td>-->
+
+                  <td class="text-center">
+                    <span class="{{reg.Status_Color_Code}}">
+                      {{reg.STATUS_DESC}}
+                    </span>
+                  </td>
+                  <td>
+                    {{reg.UPDATED_BY}} - {{reg.EmployeeName}}
+                  </td>
+                  <td>{{reg.UPDATED_DT | date :'dd-MM-yyyy hh:mm a'}}</td>
+                  <td class="text-center">
+
+                    <span class="font-18 text-green" data-placement="bottom" title="Download File" *ngIf="reg.AttachmentExists == 'YES'">
+                      <i class="feather icon-download-cloud mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-warning" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.SLAExceeded == 'YES'">
+                      <i class="feather icon-info mr-1" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="font-18 text-red" data-placement="bottom" title="SLA Exceeded" *ngIf="reg.Alarm == 'YES'">
+                      <i class="feather icon-clock" aria-hidden="true"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

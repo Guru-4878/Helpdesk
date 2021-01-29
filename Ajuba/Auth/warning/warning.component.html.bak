@@ -1,0 +1,25 @@
+
+<div class="container  alert alert-primary" role="alert" style="margin-top: 40px!important;">
+  <div class="row">
+    <div class="alert alert-primary" role="alert">
+      You are logging into Ajuba Restricted Privilege. This login is enabled only for authorized personnel for the purpose of carrying out official work. Please logout immediately if you are not an authorized user. Each user is uniquely identified within all Ajuba processing systems and applications. It is mandatory that correct identity is given for gaining login access. Login identity cannot be shared with anyone under any pretext. Sharing login identity as well as gaining login access using someone else’s login identity are ISMS violations and may lead to ISMS disciplinary actions. We are capturing your System IP, Hostname, Login ID and Login
+      time in
+      system log for troubleshooting.
+      <br />
+      <br />
+      Please confirm that you are an authorized user and you are the owner of this identity <span style="color:brown;font-weight:bold;background-color:yellow;">{{loginname}}</span>  Please logout immediately
+      if you are not the owner of this identity.
+    </div>
+  </div>
+  <div class="row alert alert-primary" role="alert">
+    <div class="col-sm-8 col-md-8">
+
+    </div>
+    <div class="col-sm-1 col-md-1">
+      <button type="button" class="btn btn-success" (click)="login()">Ok</button>
+    </div>
+    <div class="col-sm-1 col-md-1">
+      <button type="button" class="btn btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</div>

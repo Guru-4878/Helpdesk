@@ -1,0 +1,31 @@
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GlobalUtils } from '../../../Global/Globalvariables';
+import { ApiSharedService } from '../../../Services/APIHelper';
+import { UserProfile } from '../../../Global/UserProfile';
+@Component({
+  selector: 'app-warning',
+  templateUrl: './warning.component.html'
+})
+export class WarningComponent implements AfterViewInit {
+  loginUser: string;
+  changeuser: string = "0"
+  constructor(private router: Router, private route: ActivatedRoute, private global: GlobalUtils, private http: ApiSharedService, private User: UserProfile) {
+    this.changeuser = localStorage.getItem("C");
+  }
+  ngAfterViewInit() {
+    this.CAS_UserDetails();
+  }
+  CAS_UserDetails() {
+    this.http.GET("AuthenticationDetails").subscribe(
+      (Result: any) => {
+        if (Result != null) {
+          this.User.setProfile(Result);
+          this.loginUser = Result.EmployeeLoginName;
+          this.router.navigate(['/HelpDesk/Process/Dashboard']);
+        }
+      }
+    );
+
+  }
+}

@@ -1,0 +1,13 @@
+<div class="row align-items-center">
+  <div class="col-md-12">
+    <ul class="breadcrumb breadcrumb-ext bg-transparent">
+      <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs">
+        <a [routerLink]="breadcrumb.url" routerLinkActive="router-link-active"  class="text-light">
+          <i *ngIf="breadcrumb.label=='Home'" class="feather icon-home"></i>
+          {{ breadcrumb.label}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+

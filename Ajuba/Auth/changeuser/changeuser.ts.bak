@@ -1,0 +1,54 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormArray, FormGroup, FormControl, NgForm, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GlobalUtils } from '../../../Global/Globalvariables';
+import { ApiSharedService } from '../../../Services/APIHelper';
+import { UserProfile } from '../../../Global/UserProfile';
+import { CasDetails } from '../../../Models/CAS/cas-details';
+@Component({
+  selector: 'app-Changeuser',
+  templateUrl: './changeuser.html',
+  styleUrls: []
+})
+export class ChangeUserComponent implements OnInit {
+  loginForm: FormGroup;
+  submitted = false;
+  logindata: CasDetails;
+  ticketEmployess: any[] = [];
+  public get_TicketEmployeeDetails: string = 'api/Helpdesk/Process/ChangeUserEmployeeDetails';
+  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private global: GlobalUtils, private http: ApiSharedService, private User: UserProfile) {
+    this.logindata = <CasDetails>{};
+    this.logindata.EmployeeName = '';
+  }
+  ngOnInit() {
+    this.TicketEmployeeDetails();
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required]
+    });
+  }
+  TicketEmployeeDetails() {
+    this.http.GET(this.get_TicketEmployeeDetails).subscribe(
+      (Result: any) => {
+        this.ticketEmployess = Result;
+      }
+    );
+  }
+  get f() { return this.loginForm.controls; }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
+    this.logindata.EmployeeCode = this.loginForm.value.username.toUpperCase();
+
+    let ArrayObjEmployee = this.ticketEmployess.find((R: any) => R.value.toString().toUpperCase() == this.loginForm.value.username.toUpperCase());
+    if (ArrayObjEmployee === undefined || ArrayObjEmployee === "undefined")
+      this.logindata.EmployeeName = this.loginForm.value.username.toUpperCase();
+    else
+      this.logindata.EmployeeName = ArrayObjEmployee.label;
+    this.User.setProfile(this.logindata);
+    localStorage.setItem("C", "1");
+    this.router.navigate(['/HelpDesk/Process/Dashboard']);
+  }
+}
